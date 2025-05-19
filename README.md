@@ -1,6 +1,5 @@
 # Blue_Horn_Tech_Assignment
 Assignment
-![Application Screenshot](public/screenshot.png)
 
 A Ruby on Rails application for homecare workers to log visit verifications with geolocation.
 
