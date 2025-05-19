@@ -30,7 +30,7 @@ A Ruby on Rails application for homecare workers to log visit verifications with
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/Blue_Horn_Tech_Assignment.git
+   git clone https://github.com/ahmadishfaq1/Blue_Horn_Tech_Assignment.git
    cd Blue_Horn_Tech_Assignment
    
 2. bundle install
