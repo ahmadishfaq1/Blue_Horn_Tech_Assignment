@@ -1,0 +1,626 @@
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-05-16 21:33:00.694488', '2025-05-16 21:33:00.694492') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateCaregivers (20250516213244)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE "caregivers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250516213244') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateClients (20250516213248)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE TABLE "clients" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "address" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250516213248') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateShifts (20250516213252)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "shifts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "date" date, "start_time" time, "end_time" time, "caregiver_id" integer NOT NULL, "client_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_274e6c3285"
+FOREIGN KEY ("caregiver_id")
+  REFERENCES "caregivers" ("id")
+, CONSTRAINT "fk_rails_14a303b957"
+FOREIGN KEY ("client_id")
+  REFERENCES "clients" ("id")
+)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_shifts_on_caregiver_id" ON "shifts" ("caregiver_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_shifts_on_client_id" ON "shifts" ("client_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250516213252') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateVisitLogs (20250516213256)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "visit_logs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "event_type" varchar, "timestamp" datetime(6), "latitude" float, "longitude" float, "shift_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9b588f6597"
+FOREIGN KEY ("shift_id")
+  REFERENCES "shifts" ("id")
+)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_visit_logs_on_shift_id" ON "visit_logs" ("shift_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250516213256') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCaregiver Create (1.8ms)[0m  [1m[32mINSERT INTO "caregivers" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "Jane Doe"], ["created_at", "2025-05-16 21:34:36.603499"], ["updated_at", "2025-05-16 21:34:36.603499"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.8ms)[0m  [1m[32mINSERT INTO "clients" ("name", "address", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["name", "John Smith"], ["address", "123 Main St, Anytown, USA"], ["created_at", "2025-05-16 21:34:36.616713"], ["updated_at", "2025-05-16 21:34:36.616713"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mShift Create (1.2ms)[0m  [1m[32mINSERT INTO "shifts" ("date", "start_time", "end_time", "caregiver_id", "client_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["date", "2025-05-16"], ["start_time", "2000-01-01 17:00:00"], ["end_time", "2000-01-01 01:00:00"], ["caregiver_id", 1], ["client_id", 1], ["created_at", "2025-05-16 21:34:36.645975"], ["updated_at", "2025-05-16 21:34:36.645975"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Started GET "/" for ::1 at 2025-05-16 14:38:56 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.4ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.7ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:21
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:61
+  Rendered shifts/show.html.erb within layouts/application (Duration: 71.6ms | Allocations: 9903)
+  Rendered layout layouts/application.html.erb (Duration: 378.9ms | Allocations: 116118)
+Completed 200 OK in 505ms (Views: 389.7ms | ActiveRecord: 7.9ms | Allocations: 152715)
+
+
+Started POST "/shifts/1/start_visit" for ::1 at 2025-05-16 14:39:05 -0700
+Processing by ShiftsController#start_visit as */*
+  Parameters: {"latitude"=>31.442889277523175, "longitude"=>74.25628268764876, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:9:in `start_visit'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mVisitLog Create (0.9ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "start"], ["timestamp", "2025-05-16 21:39:05.455525"], ["latitude", 31.442889277523175], ["longitude", 74.25628268764876], ["shift_id", 1], ["created_at", "2025-05-16 21:39:05.464034"], ["updated_at", "2025-05-16 21:39:05.464034"]]
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+Completed 200 OK in 24ms (Views: 0.2ms | ActiveRecord: 1.5ms | Allocations: 12195)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:39:05 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:21
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:61
+  [1m[36mVisitLog Load (0.4ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:65
+  Rendered shifts/show.html.erb within layouts/application (Duration: 4.4ms | Allocations: 1769)
+  Rendered layout layouts/application.html.erb (Duration: 8.1ms | Allocations: 3584)
+Completed 200 OK in 11ms (Views: 8.1ms | ActiveRecord: 0.7ms | Allocations: 4930)
+
+
+Started POST "/shifts/1/end_visit" for ::1 at 2025-05-16 14:39:07 -0700
+Processing by ShiftsController#end_visit as */*
+  Parameters: {"latitude"=>31.442889277523175, "longitude"=>74.25628268764876, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:18:in `end_visit'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mVisitLog Create (0.8ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "end"], ["timestamp", "2025-05-16 21:39:07.600655"], ["latitude", 31.442889277523175], ["longitude", 74.25628268764876], ["shift_id", 1], ["created_at", "2025-05-16 21:39:07.601300"], ["updated_at", "2025-05-16 21:39:07.601300"]]
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.0ms | Allocations: 2531)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:39:07 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:21
+  [1m[36mVisitLog Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:61
+  [1m[36mVisitLog Load (0.1ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:65
+  Rendered shifts/show.html.erb within layouts/application (Duration: 5.3ms | Allocations: 1700)
+  Rendered layout layouts/application.html.erb (Duration: 11.9ms | Allocations: 3519)
+Completed 200 OK in 16ms (Views: 11.9ms | ActiveRecord: 0.6ms | Allocations: 4860)
+
+
+Started POST "/shifts/1/start_visit" for ::1 at 2025-05-16 14:39:12 -0700
+Processing by ShiftsController#start_visit as */*
+  Parameters: {"latitude"=>31.442884440226408, "longitude"=>74.25604249236432, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:9:in `start_visit'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mVisitLog Create (1.0ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "start"], ["timestamp", "2025-05-16 21:39:12.796430"], ["latitude", 31.442884440226408], ["longitude", 74.25604249236432], ["shift_id", 1], ["created_at", "2025-05-16 21:39:12.797063"], ["updated_at", "2025-05-16 21:39:12.797063"]]
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 1.2ms | Allocations: 2520)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:39:12 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:21
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:61
+  [1m[36mVisitLog Load (0.1ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:65
+  Rendered shifts/show.html.erb within layouts/application (Duration: 15.0ms | Allocations: 1747)
+  Rendered layout layouts/application.html.erb (Duration: 24.8ms | Allocations: 3545)
+Completed 200 OK in 28ms (Views: 25.0ms | ActiveRecord: 0.4ms | Allocations: 4886)
+
+
+Started POST "/shifts/1/end_visit" for ::1 at 2025-05-16 14:39:14 -0700
+Processing by ShiftsController#end_visit as */*
+  Parameters: {"latitude"=>31.44288443858086, "longitude"=>74.25604240459714, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:18:in `end_visit'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mVisitLog Create (1.0ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "end"], ["timestamp", "2025-05-16 21:39:14.613039"], ["latitude", 31.44288443858086], ["longitude", 74.25604240459714], ["shift_id", 1], ["created_at", "2025-05-16 21:39:14.613954"], ["updated_at", "2025-05-16 21:39:14.613954"]]
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+Completed 200 OK in 26ms (Views: 0.1ms | ActiveRecord: 1.2ms | Allocations: 2535)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:39:14 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:21
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:61
+  [1m[36mVisitLog Load (0.0ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:65
+  Rendered shifts/show.html.erb within layouts/application (Duration: 2.6ms | Allocations: 1795)
+  Rendered layout layouts/application.html.erb (Duration: 5.2ms | Allocations: 3617)
+Completed 200 OK in 8ms (Views: 5.4ms | ActiveRecord: 0.3ms | Allocations: 4958)
+
+
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" ORDER BY "shifts"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" ORDER BY "shifts"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mShift Destroy (1.1ms)[0m  [1m[31mDELETE FROM "shifts" WHERE "shifts"."id" = ?[0m  [["id", 1]]
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" ORDER BY "clients"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" ORDER BY "clients"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mClient Destroy (0.4ms)[0m  [1m[31mDELETE FROM "clients" WHERE "clients"."id" = ?[0m  [["id", 1]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (3.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-05-16 21:44:14.125588', '2025-05-16 21:44:14.125591') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateCaregivers (20250516213244)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE "caregivers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250516213244') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateClients (20250516213248)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE TABLE "clients" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "address" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250516213248') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateShifts (20250516213252)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE "shifts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "date" date, "start_time" time, "end_time" time, "caregiver_id" integer NOT NULL, "client_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_274e6c3285"
+FOREIGN KEY ("caregiver_id")
+  REFERENCES "caregivers" ("id")
+, CONSTRAINT "fk_rails_14a303b957"
+FOREIGN KEY ("client_id")
+  REFERENCES "clients" ("id")
+)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_shifts_on_caregiver_id" ON "shifts" ("caregiver_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_shifts_on_client_id" ON "shifts" ("client_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250516213252') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateVisitLogs (20250516213256)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "visit_logs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "event_type" varchar, "timestamp" datetime(6), "latitude" float, "longitude" float, "shift_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9b588f6597"
+FOREIGN KEY ("shift_id")
+  REFERENCES "shifts" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_visit_logs_on_shift_id" ON "visit_logs" ("shift_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250516213256') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCaregiver Create (1.5ms)[0m  [1m[32mINSERT INTO "caregivers" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "Jane Doe"], ["created_at", "2025-05-16 21:44:18.721799"], ["updated_at", "2025-05-16 21:44:18.721799"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (1.2ms)[0m  [1m[32mINSERT INTO "clients" ("name", "address", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["name", "John Smith"], ["address", "123 Main St, Anytown, USA"], ["created_at", "2025-05-16 21:44:18.731860"], ["updated_at", "2025-05-16 21:44:18.731860"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mShift Create (0.8ms)[0m  [1m[32mINSERT INTO "shifts" ("date", "start_time", "end_time", "caregiver_id", "client_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["date", "2025-05-16"], ["start_time", "2000-01-01 17:00:00"], ["end_time", "2000-01-01 01:00:00"], ["caregiver_id", 1], ["client_id", 1], ["created_at", "2025-05-16 21:44:18.749434"], ["updated_at", "2025-05-16 21:44:18.749434"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Started GET "/" for ::1 at 2025-05-16 14:44:25 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.2ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.2ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  Rendered shifts/show.html.erb within layouts/application (Duration: 21.9ms | Allocations: 9836)
+  Rendered layout layouts/application.html.erb (Duration: 199.9ms | Allocations: 56472)
+Completed 200 OK in 258ms (Views: 204.1ms | ActiveRecord: 4.4ms | Allocations: 85197)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:26 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  Rendered shifts/show.html.erb within layouts/application (Duration: 1.8ms | Allocations: 1133)
+  Rendered layout layouts/application.html.erb (Duration: 4.3ms | Allocations: 2943)
+Completed 200 OK in 7ms (Views: 4.5ms | ActiveRecord: 0.3ms | Allocations: 4306)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:34 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.2ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  Rendered shifts/show.html.erb within layouts/application (Duration: 2.5ms | Allocations: 1127)
+  Rendered layout layouts/application.html.erb (Duration: 7.3ms | Allocations: 2928)
+Completed 200 OK in 13ms (Views: 8.0ms | ActiveRecord: 0.4ms | Allocations: 4285)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:35 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  Rendered shifts/show.html.erb within layouts/application (Duration: 2.0ms | Allocations: 1127)
+  Rendered layout layouts/application.html.erb (Duration: 6.5ms | Allocations: 2943)
+Completed 200 OK in 11ms (Views: 7.5ms | ActiveRecord: 0.4ms | Allocations: 4299)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:35 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.3ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  Rendered shifts/show.html.erb within layouts/application (Duration: 5.7ms | Allocations: 1127)
+  Rendered layout layouts/application.html.erb (Duration: 10.4ms | Allocations: 2947)
+Completed 200 OK in 15ms (Views: 10.7ms | ActiveRecord: 0.7ms | Allocations: 4288)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:35 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.3ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  Rendered shifts/show.html.erb within layouts/application (Duration: 2.3ms | Allocations: 1127)
+  Rendered layout layouts/application.html.erb (Duration: 7.8ms | Allocations: 2919)
+Completed 200 OK in 13ms (Views: 8.1ms | ActiveRecord: 0.6ms | Allocations: 4260)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:35 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  Rendered shifts/show.html.erb within layouts/application (Duration: 3.7ms | Allocations: 1127)
+  Rendered layout layouts/application.html.erb (Duration: 9.0ms | Allocations: 2925)
+Completed 200 OK in 13ms (Views: 9.2ms | ActiveRecord: 0.5ms | Allocations: 4266)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:35 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  Rendered shifts/show.html.erb within layouts/application (Duration: 2.6ms | Allocations: 1127)
+  Rendered layout layouts/application.html.erb (Duration: 7.0ms | Allocations: 2931)
+Completed 200 OK in 10ms (Views: 7.3ms | ActiveRecord: 0.4ms | Allocations: 4272)
+
+
+Started POST "/shifts/1/start_visit" for ::1 at 2025-05-16 14:44:37 -0700
+Processing by ShiftsController#start_visit as */*
+  Parameters: {"latitude"=>31.442904706517652, "longitude"=>74.25624072890933, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.2ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:9:in `start_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mVisitLog Create (1.1ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "start"], ["timestamp", "2025-05-16 21:44:37.182471"], ["latitude", 31.442904706517652], ["longitude", 74.25624072890933], ["shift_id", 1], ["created_at", "2025-05-16 21:44:37.189380"], ["updated_at", "2025-05-16 21:44:37.189380"]]
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mTRANSACTION (2.4ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+Completed 200 OK in 19ms (Views: 0.2ms | ActiveRecord: 3.7ms | Allocations: 9703)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:37 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  [1m[36mVisitLog Load (0.3ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:64
+  Rendered shifts/show.html.erb within layouts/application (Duration: 7.4ms | Allocations: 1763)
+  Rendered layout layouts/application.html.erb (Duration: 17.2ms | Allocations: 3580)
+Completed 200 OK in 21ms (Views: 17.1ms | ActiveRecord: 0.7ms | Allocations: 4922)
+
+
+Started POST "/shifts/1/end_visit" for ::1 at 2025-05-16 14:44:41 -0700
+Processing by ShiftsController#end_visit as */*
+  Parameters: {"latitude"=>31.442904706517652, "longitude"=>74.25624072890933, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.2ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:18:in `end_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mVisitLog Create (1.1ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "end"], ["timestamp", "2025-05-16 21:44:41.324933"], ["latitude", 31.442904706517652], ["longitude", 74.25624072890933], ["shift_id", 1], ["created_at", "2025-05-16 21:44:41.326014"], ["updated_at", "2025-05-16 21:44:41.326014"]]
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 1.4ms | Allocations: 2526)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:41 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.2ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.2ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  [1m[36mVisitLog Load (0.1ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:64
+  Rendered shifts/show.html.erb within layouts/application (Duration: 5.2ms | Allocations: 1700)
+  Rendered layout layouts/application.html.erb (Duration: 10.3ms | Allocations: 3524)
+Completed 200 OK in 17ms (Views: 10.5ms | ActiveRecord: 0.6ms | Allocations: 4866)
+
+
+Started POST "/shifts/1/start_visit" for ::1 at 2025-05-16 14:44:43 -0700
+Processing by ShiftsController#start_visit as */*
+  Parameters: {"latitude"=>31.442846738921855, "longitude"=>74.25622361147079, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.2ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:9:in `start_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mVisitLog Create (1.8ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "start"], ["timestamp", "2025-05-16 21:44:43.256566"], ["latitude", 31.442846738921855], ["longitude", 74.25622361147079], ["shift_id", 1], ["created_at", "2025-05-16 21:44:43.257648"], ["updated_at", "2025-05-16 21:44:43.257648"]]
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+Completed 200 OK in 9ms (Views: 0.2ms | ActiveRecord: 2.2ms | Allocations: 2511)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:43 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.2ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  [1m[36mVisitLog Load (0.1ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:64
+  Rendered shifts/show.html.erb within layouts/application (Duration: 3.5ms | Allocations: 1747)
+  Rendered layout layouts/application.html.erb (Duration: 7.4ms | Allocations: 3554)
+Completed 200 OK in 14ms (Views: 7.7ms | ActiveRecord: 0.6ms | Allocations: 4895)
+
+
+Started POST "/shifts/1/end_visit" for ::1 at 2025-05-16 14:44:44 -0700
+Processing by ShiftsController#end_visit as */*
+  Parameters: {"latitude"=>31.442846061106792, "longitude"=>74.2562234065738, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:18:in `end_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mVisitLog Create (1.6ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "end"], ["timestamp", "2025-05-16 21:44:44.691764"], ["latitude", 31.442846061106792], ["longitude", 74.2562234065738], ["shift_id", 1], ["created_at", "2025-05-16 21:44:44.692550"], ["updated_at", "2025-05-16 21:44:44.692550"]]
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 1.8ms | Allocations: 2517)
+
+
+Started GET "/" for ::1 at 2025-05-16 14:44:44 -0700
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (1.0ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.2ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.2ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  [1m[36mVisitLog Load (0.1ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:64
+  Rendered shifts/show.html.erb within layouts/application (Duration: 6.4ms | Allocations: 1795)
+  Rendered layout layouts/application.html.erb (Duration: 11.3ms | Allocations: 3602)
+Completed 200 OK in 18ms (Views: 11.3ms | ActiveRecord: 0.8ms | Allocations: 4944)
+
+
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCaregiver Create (0.1ms)[0m  [1m[32mINSERT INTO "caregivers" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "Jane Doe"], ["created_at", "2025-05-19 13:46:19.475872"], ["updated_at", "2025-05-19 13:46:19.475872"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.4ms)[0m  [1m[32mINSERT INTO "clients" ("name", "address", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["name", "John Smith"], ["address", "123 Main St, Anytown, USA"], ["created_at", "2025-05-19 13:46:19.480018"], ["updated_at", "2025-05-19 13:46:19.480018"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mShift Create (0.7ms)[0m  [1m[32mINSERT INTO "shifts" ("date", "start_time", "end_time", "caregiver_id", "client_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["date", "2025-05-19"], ["start_time", "2000-01-01 04:00:00"], ["end_time", "2000-01-01 12:00:00"], ["caregiver_id", 2], ["client_id", 2], ["created_at", "2025-05-19 13:46:19.493279"], ["updated_at", "2025-05-19 13:46:19.493279"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Started GET "/" for ::1 at 2025-05-19 18:46:47 +0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.0ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  [1m[36mVisitLog Load (0.1ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:64
+  Rendered shifts/show.html.erb within layouts/application (Duration: 9.3ms | Allocations: 15890)
+  Rendered layout layouts/application.html.erb (Duration: 1016.6ms | Allocations: 123932)
+Completed 200 OK in 1058ms (Views: 1020.0ms | ActiveRecord: 1.8ms | Allocations: 160523)
+
+
+Started POST "/shifts/1/start_visit" for ::1 at 2025-05-19 18:47:06 +0500
+Processing by ShiftsController#start_visit as */*
+  Parameters: {"latitude"=>31.516821500450966, "longitude"=>74.3521591201742, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:9:in `start_visit'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mVisitLog Create (0.5ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "start"], ["timestamp", "2025-05-19 13:47:06.354804"], ["latitude", 31.516821500450966], ["longitude", 74.3521591201742], ["shift_id", 1], ["created_at", "2025-05-19 13:47:06.355638"], ["updated_at", "2025-05-19 13:47:06.355638"]]
+  ↳ app/models/shift.rb:7:in `start_visit'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:7:in `start_visit'
+Completed 200 OK in 22ms (Views: 0.1ms | ActiveRecord: 0.9ms | Allocations: 8868)
+
+
+Started GET "/" for ::1 at 2025-05-19 18:47:06 +0500
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.0ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  [1m[36mVisitLog Load (0.0ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:64
+  Rendered shifts/show.html.erb within layouts/application (Duration: 1.6ms | Allocations: 1857)
+  Rendered layout layouts/application.html.erb (Duration: 2.9ms | Allocations: 3673)
+Completed 200 OK in 5ms (Views: 3.0ms | ActiveRecord: 0.2ms | Allocations: 5027)
+
+
+Started POST "/shifts/1/end_visit" for ::1 at 2025-05-19 18:47:20 +0500
+Processing by ShiftsController#end_visit as */*
+  Parameters: {"latitude"=>31.516821500450966, "longitude"=>74.3521591201742, "id"=>"1", "shift"=>{}}
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:18:in `end_visit'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mVisitLog Create (0.5ms)[0m  [1m[32mINSERT INTO "visit_logs" ("event_type", "timestamp", "latitude", "longitude", "shift_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["event_type", "end"], ["timestamp", "2025-05-19 13:47:20.028444"], ["latitude", 31.516821500450966], ["longitude", 74.3521591201742], ["shift_id", 1], ["created_at", "2025-05-19 13:47:20.028941"], ["updated_at", "2025-05-19 13:47:20.028941"]]
+  ↳ app/models/shift.rb:16:in `end_visit'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/models/shift.rb:16:in `end_visit'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms | Allocations: 2571)
+
+
+Started GET "/" for ::1 at 2025-05-19 18:47:20 +0500
+Processing by ShiftsController#show as HTML
+  [1m[36mCaregiver Load (0.1ms)[0m  [1m[34mSELECT "caregivers".* FROM "caregivers" ORDER BY "caregivers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:4:in `show'
+  [1m[36mShift Load (0.1ms)[0m  [1m[34mSELECT "shifts".* FROM "shifts" WHERE "shifts"."caregiver_id" = ? ORDER BY "shifts"."id" ASC LIMIT ?[0m  [["caregiver_id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/shifts_controller.rb:5:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering shifts/show.html.erb within layouts/application
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:20
+  [1m[36mVisitLog Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? LIMIT ?[0m  [["shift_id", 1], ["LIMIT", 1]]
+  ↳ app/views/shifts/show.html.erb:60
+  [1m[36mVisitLog Load (0.0ms)[0m  [1m[34mSELECT "visit_logs".* FROM "visit_logs" WHERE "visit_logs"."shift_id" = ? ORDER BY "visit_logs"."timestamp" DESC[0m  [["shift_id", 1]]
+  ↳ app/views/shifts/show.html.erb:64
+  Rendered shifts/show.html.erb within layouts/application (Duration: 1.6ms | Allocations: 1898)
+  Rendered layout layouts/application.html.erb (Duration: 3.3ms | Allocations: 3706)
+Completed 200 OK in 6ms (Views: 3.5ms | ActiveRecord: 0.3ms | Allocations: 5053)
+
+

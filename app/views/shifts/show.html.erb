@@ -1,0 +1,74 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">Caregiver Shift</h1>
+
+  <div class="bg-white shadow rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-semibold mb-4">Shift Details</h2>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <p class="text-gray-600">Date</p>
+        <p class="font-medium"><%= @shift.date.strftime("%B %d, %Y") %></p>
+      </div>
+      <div>
+        <p class="text-gray-600">Time</p>
+        <p class="font-medium"><%= @shift.start_time.strftime("%I:%M %p") %> - <%= @shift.end_time.strftime("%I:%M %p") %></p>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <p class="text-gray-600">Client</p>
+      <p class="font-medium"><%= @shift.client.name %></p>
+    </div>
+
+    <div>
+      <p class="text-gray-600">Address</p>
+      <p class="font-medium"><%= @shift.client.address %></p>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4">Visit Log</h2>
+
+    <div class="flex space-x-4">
+      <button
+        id="start-visit"
+        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:bg-gray-300"
+        data-controller="visit"
+        data-visit-url-value="<%= start_visit_shift_path(@shift) %>"
+        data-action="click->visit#logVisit"
+      >
+        Start Visit
+      </button>
+
+      <button
+        id="end-visit"
+        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-gray-300"
+        data-controller="visit"
+        data-visit-url-value="<%= end_visit_shift_path(@shift) %>"
+        data-action="click->visit#logVisit"
+      >
+        End Visit
+      </button>
+    </div>
+
+    <div id="location-message" class="mt-4 text-sm text-gray-600 hidden">
+      Getting your location...
+    </div>
+
+    <div id="error-message" class="mt-4 text-sm text-red-600 hidden"></div>
+
+    <% if @shift.visit_logs.any? %>
+      <div class="mt-6">
+        <h3 class="font-medium mb-2">Log History</h3>
+        <ul class="divide-y">
+          <% @shift.visit_logs.order(timestamp: :desc).each do |log| %>
+            <li class="py-2">
+              <p><%= log.event_type.capitalize %>: <%= log.timestamp.strftime("%I:%M %p") %></p>
+              <p class="text-sm text-gray-600">Location: <%= log.latitude %>, <%= log.longitude %></p>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</div>
