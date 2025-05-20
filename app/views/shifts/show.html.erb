@@ -63,7 +63,7 @@
         <ul class="divide-y">
           <% @shift.visit_logs.order(timestamp: :desc).each do |log| %>
             <li class="py-2">
-              <p><%= log.event_type.capitalize %>: <%= log.timestamp.strftime("%I:%M %p") %></p>
+              <p><%= log.event_type.capitalize %>: <%= log.timestamp.strftime("%B %d, %Y, %I:%M %p") %></p>
               <p class="text-sm text-gray-600">Location: <%= log.latitude %>, <%= log.longitude %></p>
             </li>
           <% end %>
